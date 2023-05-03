@@ -1,5 +1,6 @@
-#include "c_api/wol.h"
 #include <iostream>
+
+#include "app/wol_instance.h"
 
 int main(int argc, char* argv[])
 {
@@ -12,17 +13,15 @@ int main(int argc, char* argv[])
     }
     std::cout << hardwareAddr << std::endl;
 
-    int fd = startupSocket();
-    std::cout << "fd: " << fd << std::endl;
-    if (fd < 0)
+    WakeOnLanInstance wolIns;
+    if (wolIns.isFailed())
     {
         std::cout << "create socket fd fail." << std::endl;
         return -1;
     }
 
-    int ret = sendMagicPacket(fd, hardwareAddr.c_str(), defaultIp, port);
+    int ret = wolIns.sendMagicPacket(hardwareAddr.c_str(), defaultIp, port);
     std::cout << "ret: " << ret << std::endl;
-    closeSocket(fd);
 
     return 0;
 }

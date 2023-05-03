@@ -33,7 +33,7 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin")
 endif()
 
 file(GLOB MODULES_SRC_TOP ${PROJECT_SOURCE_DIR}/src/*.cc)
-file(GLOB_RECURSE MODULES_SRC_NESTED ${PROJECT_SOURCE_DIR}/src/utils/*.cc ${PROJECT_SOURCE_DIR}/src/app/*.cc)
+file(GLOB_RECURSE MODULES_SRC_NESTED ${PROJECT_SOURCE_DIR}/src/utils/*.cc ${PROJECT_SOURCE_DIR}/src/app/*.cc ${PROJECT_SOURCE_DIR}/src/common/*.cc)
 set(MODULES_SRC ${MODULES_SRC_TOP} ${MODULES_SRC_NESTED})
 
 file(GLOB_RECURSE TEST_FILES ${PROJECT_SOURCE_DIR}/tests/*.cc)
@@ -50,6 +50,9 @@ endforeach(FILE_PATH)
 foreach(_target ${TEST_NAMES})
   target_sources(${_target} PRIVATE ${MODULES_SRC})
   target_include_directories(${_target} PUBLIC ${PROJECT_SOURCE_DIR}/include)
+  if(WIN32)
+   target_link_libraries(${_target} wsock32 ws2_32)
+  endif()
   set_target_properties(
     ${_target}
     PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/../out"
