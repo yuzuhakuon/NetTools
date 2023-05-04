@@ -7,10 +7,10 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #else
-// #include <arpa/inet.h>
-// #include <sys/socket.h>
-// #include <netinet/in.h>
-// #include <unistd.h>
+#include <arpa/inet.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <unistd.h>
 #endif
 #include "app/wol_instance.h"
 #include "common/status_code.h"
@@ -41,7 +41,7 @@ WakeOnLanInstance::~WakeOnLanInstance()
 #if WIN32
         closesocket(sockfd_);
 #else
-        close(sockfd);
+        close(sockfd_);
 #endif
     }
 
