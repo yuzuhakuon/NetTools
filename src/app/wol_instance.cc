@@ -2,16 +2,7 @@
 #include <stdexcept>
 #include <string>
 
-#ifdef WIN32
-#include <winsock2.h>
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#else
-#include <arpa/inet.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <unistd.h>
-#endif
+#include "common/network_inc.h"
 #include "app/wol_instance.h"
 #include "common/status_code.h"
 #include "utils/tools.h"
@@ -24,6 +15,7 @@ WakeOnLanInstance::WakeOnLanInstance()
     if (sockfd_ < 0)
     {
         sockfd_ = InvalidSocket;
+        return;
     }
 
     int optval = 1;
@@ -75,7 +67,7 @@ int WakeOnLanInstance::sendMagicPacket(const char* macAddr, const char* ipAddr, 
     int ret = sendto(sockfd_, message.c_str(), message.length(), 0, reinterpret_cast<sockaddr*>(&addr), sizeof(addr));
     if (ret < 0)
     {
-        return SendDataFail;
+        return SendDataFailed;
     }
 
     return SuccessCode;

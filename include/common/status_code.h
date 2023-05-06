@@ -5,4 +5,5 @@
 #define InvalidSocket -2
 #define InvalidMACAddress -3
 #define InvalidIPAddress -4
-#define SendDataFail -5
+#define SendDataFailed -5
+#define BindFailed -6
